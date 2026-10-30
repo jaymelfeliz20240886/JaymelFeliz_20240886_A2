@@ -1,0 +1,23 @@
+# ==========================================
+# Dispositivo: Windows Server (AD / NPS)
+# IP Estática: 10.20.24.88 /24
+# ==========================================
+
+# 1. Desactivar DHCP y asignar IP estática
+Set-NetIPInterface -InterfaceAlias "Ethernet" -Dhcp Disabled
+New-NetIPAddress -InterfaceAlias "Ethernet" -IPAddress 10.20.24.88 -PrefixLength 24 -DefaultGateway 10.20.24.1
+Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses 127.0.0.1
+
+# 2. Instalar el rol de Active Directory y promover el controlador de dominio
+Install-WindowsFeature -Name AD-Domain-Services -IncludeManagementTools
+Install-ADDSForest -DomainName "lab.local" -InstallDns -Force
+
+# (El servidor se reinicia aquí)
+
+# 3. Crear los grupos de seguridad en Active Directory
+New-ADGroup -Name "Nivel_0" -GroupCategory Security -GroupScope Global
+New-ADGroup -Name "Nivel_5" -GroupCategory Security -GroupScope Global
+New-ADGroup -Name "Nivel_10" -GroupCategory Security -GroupScope Global
+
+# 4. Autorizar el Servidor NPS en el Directorio Activo (El rol se instaló vía GUI)
+netsh nps add registeredserver

@@ -1,0 +1,62 @@
+! ==========================================
+! Dispositivo: Router R1
+! IP LAN: 10.20.24.1 /24
+! ==========================================
+
+enable
+configure terminal
+hostname R1
+ip domain-name lab.local
+
+! 1. Crear usuario local de respaldo
+username admin privilege 15 secret cisco123
+
+! 2. Habilitar el modelo AAA
+aaa new-model
+
+! 3. Configurar el Servidor RADIUS (NPS)
+radius server NPS-SERVER
+ address ipv4 10.20.24.88 auth-port 1812 acct-port 1813
+ key RadiusSecret2024
+exit
+
+! 4. Configurar listas de Autenticación y Autorización
+aaa authentication login LISTA_ACCESO group radius local
+aaa authorization exec LISTA_ACCESO group radius local
+
+! 5. Habilitar Logs de autenticación, autorización y RADIUS
+aaa accounting auth-proxy default start-stop group radius
+aaa accounting exec default start-stop group radius
+aaa accounting commands 15 default start-stop group radius
+
+! 6. Configurar la interfaz LAN 
+interface FastEthernet0/0
+ ip address 10.20.24.1 255.255.255.0
+ no shutdown
+ exit
+
+! 7. Habilitar Servicio SSH
+crypto key generate rsa modulus 2048
+ip ssh version 2
+
+! 8. Aplicar seguridad SOLO a Consola, Auxiliar y VTY (SSH)
+line con 0
+ login authentication LISTA_ACCESO
+ authorization exec LISTA_ACCESO
+ logging synchronous
+ exit
+
+line aux 0
+ login authentication LISTA_ACCESO
+ authorization exec LISTA_ACCESO
+ exit
+
+line vty 0 4
+ login authentication LISTA_ACCESO
+ authorization exec LISTA_ACCESO
+ transport input ssh
+ exit
+
+! Guardar configuración
+end
+write memory

@@ -1,0 +1,65 @@
+! ==========================================
+! Dispositivo: Switch SW1
+! IP Administración (VLAN 1): 10.20.24.2 /24
+! Gateway: 10.20.24.1
+! ==========================================
+
+enable
+configure terminal
+hostname SW1
+ip domain-name lab.local
+
+! 1. Crear usuario local de respaldo
+username admin privilege 15 secret cisco123
+
+! 2. Habilitar el modelo AAA
+aaa new-model
+
+! 3. Configurar el Servidor RADIUS (NPS)
+radius server NPS-SERVER
+ address ipv4 10.20.24.88 auth-port 1812 acct-port 1813
+ key RadiusSecret2024
+exit
+
+! 4. Configurar listas de Autenticación y Autorización
+aaa authentication login LISTA_ACCESO group radius local
+aaa authorization exec LISTA_ACCESO group radius local
+
+! 5. Habilitar Logs (Accounting)
+aaa accounting exec default start-stop group radius
+aaa accounting commands 15 default start-stop group radius
+
+! 6. Configurar IP de administración y Gateway
+interface vlan 1
+ ip address 10.20.24.2 255.255.255.0
+ no shutdown
+ exit
+
+ip default-gateway 10.20.24.1
+
+! 7. Habilitar Servicio SSH (Y permitir ciphers heredados para GNS3)
+crypto key generate rsa modulus 2048
+ip ssh version 2
+ip ssh client algorithm encryption aes128-cbc aes192-cbc aes256-cbc
+
+! 8. Aplicar seguridad a Consola y VTY (SSH)
+line con 0
+ login authentication LISTA_ACCESO
+ authorization exec LISTA_ACCESO
+ logging synchronous
+ exit
+
+line aux 0
+ login authentication LISTA_ACCESO
+ authorization exec LISTA_ACCESO
+ exit
+
+line vty 0 4
+ login authentication LISTA_ACCESO
+ authorization exec LISTA_ACCESO
+ transport input ssh
+ exit
+
+! Guardar configuración
+end
+write memory
