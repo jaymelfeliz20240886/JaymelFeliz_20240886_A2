@@ -5,6 +5,9 @@
 
 ## 📌 Propósito del Laboratorio
 
+<img width="601" height="561" alt="imagen" src="https://github.com/user-attachments/assets/1e41bfea-30ed-4eaa-afeb-a905451f0061" />
+
+
 El propósito principal de este laboratorio es diseñar, configurar y validar una infraestructura de red segura implementando el modelo **AAA (Autenticación, Autorización y Contabilización)**. Se utiliza un entorno de red emulado en GNS3 integrado con un servidor Windows Server real. El objetivo es centralizar la administración de accesos de los dispositivos de red (Routers y Switches) mediante un servidor **RADIUS (Network Policy Server - NPS)** apoyado por **Active Directory**, asignando niveles de privilegios específicos (0, 5 y 10) basados en la pertenencia a grupos de seguridad, y garantizando la trazabilidad mediante logs.
 
 ## 🏗️ Topología de Red y Arquitectura
@@ -17,8 +20,8 @@ La infraestructura está compuesta por un entorno híbrido (GNS3 y Virtualizaci�
 
 * **1 Windows Server:** Actúa como Controlador de Dominio (Active Directory) y Servidor RADIUS (NPS). Integrado a GNS3 mediante un nodo Cloud.
 
+* <img width="601" height="561" alt="imagen" src="https://github.com/user-attachments/assets/d7ddcc44-e725-4822-8ea5-7f2898633b4f" />
 
-*(Reemplaza esta línea con la imagen de tu topología de GNS3)*
 
 ## 🖧 Tabla de Direccionamiento IP
 
@@ -101,16 +104,23 @@ Para garantizar la correcta ejecución de las políticas, se realizaron las sigu
 
 *Figura 1: Pruebas de conectividad ICMP entre equipos.*
 
+<img width="909" height="598" alt="imagen" src="https://github.com/user-attachments/assets/12b85ccc-2386-4b63-8f3f-8bbb7a7fa3a6" />
+
 
 *Figura 2: Políticas de red y Atributos de Cisco (VSA) en NPS.*
+
+<img width="1224" height="844" alt="imagen" src="https://github.com/user-attachments/assets/ab46a575-e954-47af-9bcb-e70fde094d6b" />
 
 
 *Figura 3: Conexión SSH exitosa y validación del nivel de privilegios con `show privilege`.*
 
+<img width="907" height="595" alt="imagen" src="https://github.com/user-attachments/assets/fbffd951-8e62-42c1-8108-6a6b95986a28" />
+
 
 *Figura 4: Registros de Accounting generados por el Servidor RADIUS.*
 
-*(Añade tus capturas de pantalla a la carpeta del repositorio y enlaza sus rutas aquí)*
+<img width="1159" height="790" alt="imagen" src="https://github.com/user-attachments/assets/7809b269-8264-4bfb-8612-85397a11351b" />
+
 
 ## 📜 Scripts y Archivos Utilizados
 
