@@ -1,7 +1,7 @@
 # Laboratorio: Implementación de Infraestructura AAA con RADIUS y Active Directory
 
 > **📺 Video Demostrativo**
-> [Haz clic aquí para ver el video demostrativo de la práctica](Enlace_a_tu_video_en_YouTube_o_Drive)
+> [Haz clic aquí para ver el video demostrativo de la práctica] https://youtu.be/Ha1q7vksv3I
 
 ## 📌 Propósito del Laboratorio
 
